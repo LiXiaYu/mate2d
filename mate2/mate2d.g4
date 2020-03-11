@@ -1,4 +1,6 @@
 ﻿grammar mate2d;
+//主要是设计语法
+//做一个宏替换器
 
 /*
  * Parser Ruless
@@ -9,10 +11,17 @@ program
 ;  
 
 block
-	: Block blockname Body
-	| Block CppTag Body
+	: Block CppTag Body
+	| Block (mateName | mateSymbol)+? Body
 ;
 
+mateName
+	: MateNameTag BlockId
+;
+
+mateSymbol
+	: MateSymbolTag BlockId
+;
 
 blockname
 	: BlockID
@@ -22,13 +31,22 @@ CppTag
 	: '艹'
 ;
 
-BlockID
-	: [a-zA-Z0-9|'_']+
+Block
+	: '@'
 ;
 
-Block
+MateNameTag
 	: '`'
 ;
+
+MateSymbolTag
+	: '``'
+;
+
+BlockID
+	: ~['@'|'`'|'$'|'\t'|' '|'\r'|'\n']+
+;
+
 
 /*
 fragment Begin

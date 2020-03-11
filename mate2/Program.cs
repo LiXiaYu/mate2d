@@ -22,24 +22,36 @@ namespace mate2
             //0;
             //}";
             string input = @"
-`testname @$ auto b=
+@`testname @$ auto b=
 ""bbb""; $@
-`test2 @$ .next() $@
+@`test2 @$ .next() $@
+@`a ``♂ `b @$ a+=b $@
+@`ass ``we `can @$ we------$@
 
-` 艹 @$ includeopkopklk $@";
+@ 艹 @$ # include<opkopklk>
+
+            //KKKKK 33
+            ////shmm mate ddd end
+            mate A<{ ddd(); }> end
+            int main()
+            {
+                auto a = ""ddd"";
+                return
+                0;
+            } $@";
 
 
-            //# include<opkopklk>
+//# include<opkopklk>
 
-            //            //KKKKK 33
-            //            ////shmm mate ddd end
-            //            mate A<{ ddd(); }> end
-            //int main()
-            //            {
-            //                auto a = ""ddd"";
-            //                return
-            //                0;
-            //            }
+//            //KKKKK 33
+//            ////shmm mate ddd end
+//            mate A<{ ddd(); }> end
+//            int main()
+//            {
+//                auto a = ""ddd"";
+//                return
+//                0;
+//            }
 
             var stream = new AntlrInputStream(input);
             var lexer = new mate2dLexer(stream);
