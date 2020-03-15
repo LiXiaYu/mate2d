@@ -11,8 +11,8 @@ program
 ;  
 
 block
-	: Block CppTag Body
-	| Block (mateName | mateSymbol)+? Body
+	: Block CppTag Body # cpp
+	| Block (mateName | mateSymbol)+? Body # rule
 ;
 
 mateName
@@ -47,6 +47,18 @@ BlockID
 	: ~['@'|'`'|'$'|'\t'|' '|'\r'|'\n']+
 ;
 
+fragment InBodyOptValueBegin
+	: '`('
+;
+fragment InBodyOptValueEnd
+	: ')`'
+;
+
+/*
+InBodyOptValue
+	: InBodyOptValueBegin .*? InBodyOptValueEnd
+;
+*/
 
 /*
 fragment Begin

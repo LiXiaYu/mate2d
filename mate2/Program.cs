@@ -22,11 +22,11 @@ namespace mate2
             //0;
             //}";
             string input = @"
-@`testname @$ auto b=
+@``testname @$ auto b=
 ""bbb""; $@
-@`test2 @$ .next() $@
-@`a ``♂ `b @$ a+=b $@
-@`ass ``we `can @$ we------$@
+@``test2 @$ .next() $@
+@`a ``♂ `b @$ `a += `b $@
+@``ass `we ``can @$ we------$@
 
 @ 艹 @$ # include<opkopklk>
 
@@ -36,6 +36,8 @@ namespace mate2
             int main()
             {
                 auto a = ""ddd"";
+                int b=20;
+                auto c=`(foo<std::string>(a+a))`♂`(b)`;
                 return
                 0;
             } $@";

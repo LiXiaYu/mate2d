@@ -8,21 +8,55 @@ namespace mate2
 {
     public class Mate2bVisitor : mate2dBaseVisitor<object>
     {
+
+        string cppText;
+
         Dictionary<string, object> memory = new Dictionary<string, object>();
 
-        public override object VisitBlock([Antlr4.Runtime.Misc.NotNull] mate2dParser.BlockContext context)
+        public override object VisitCpp([Antlr4.Runtime.Misc.NotNull] mate2dParser.CppContext context)
         {
-            return base.VisitBlock(context);
-        }
+            var body = context.Body();
+            var bodyText = body.GetText();
+            this.cppText = bodyText.Substring(2, bodyText.Length - 4);
 
-        public override object VisitBlockname([Antlr4.Runtime.Misc.NotNull] mate2dParser.BlocknameContext context)
-        {
-            return base.VisitBlockname(context);
+            return base.VisitCpp(context);
         }
 
         public override object VisitProgram([Antlr4.Runtime.Misc.NotNull] mate2dParser.ProgramContext context)
         {
             return base.VisitProgram(context);
+        }
+
+        public override object VisitRule([Antlr4.Runtime.Misc.NotNull] mate2dParser.RuleContext context)
+        {
+            var block = context.children[context.children.Count - 1];
+            var blockText = block.GetText();
+            var blockcppText = blockText.Substring(2, blockText.Length - 4);
+
+            var names =new List<string>();
+            //通过拼接正则表达式完成替换
+            string exp = ""; 
+            for(int i=1;i<context.children.Count-1;i++)
+            {
+                var id = context.children[i].GetChild(1).GetText();
+                if (context.children[i].GetChild(0).GetText() == "`")
+                {
+                    names.Add("`" + id);
+                    exp += @"`\(.*?\)`";
+                }
+                else if(context.children[i].GetChild(0).GetText() == "``")
+                {
+                    exp += id;
+                }
+
+
+                if(i<context.children.Count-2)
+                {
+                    exp += @"\s*?";
+                }
+            }
+
+            return base.VisitRule(context);
         }
     }
 }
