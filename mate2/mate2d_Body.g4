@@ -1,15 +1,40 @@
 ﻿grammar mate2d_Body;
-//主要是设计语法
-//做一个宏替换器
+/*
+ * 对c++代码段解析，用于替换
+ */
+
 
 /*
  * Parser Ruless
  */
  
 body
-    : (AnyWord|CppSymbols)+
+    : word+
 ;
 
+word
+    : MateId
+    | MateSymbols
+    | CppSymbols
+    | AnyWord
+;
+
+fragment MateIdTagBegin
+    : '`('
+;
+fragment MateIdTagEnd
+    : ')`'
+;
+
+MateId
+    : MateIdTagBegin .*? MateIdTagEnd
+;
+
+MateSymbols
+    : '`'
+    | '$'
+    | '@'
+;
 
 CppSymbols 
     : '+'
@@ -46,5 +71,5 @@ WS
 ;
 
 AnyWord
-    : ~['@'|'`'|'$'|'\t'|' '|'\r'|'\n']+
+    : ~('\t'|' '|'\r'|'\n'|'+'|'-'|'*'|'/'|'='|'!'|'#'|'%'|'^'|'&'|'('|')'|'{'|'}'|'['|']'|'\\'|'/'|':'|';'|'\"'|'\''|'<'|'>'|'?'|','|'.'|'`'|'$'|'@')+
 ;

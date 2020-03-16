@@ -61,12 +61,25 @@ namespace mate2
             var parser = new mate2dParser(tokens);
             var tree = parser.program();
 
-            var visitor = new Mate2bVisitor();
+            var visitor = new Mate2dVisitor();
             var result = visitor.Visit(tree);
 
             Console.WriteLine(tree.ToStringTree(parser));
             Console.WriteLine(result);
+
+
+            var cpps = new AntlrInputStream(visitor.cppText);
+            var cppl = new mate2d_BodyLexer(cpps);
+            var cppt = new CommonTokenStream(cppl);
+            var cppp = new mate2d_BodyParser(cppt);
+            var cpptree = cppp.body();
+
+            var cppv = new mate2d_BodyVisitor();
+            var cppr = cppv.Visit(cpptree);
+            Console.WriteLine(cpptree.ToStringTree(cppp));
+            Console.WriteLine(cppr);
             Console.ReadKey();
+
         }
     }
 }
