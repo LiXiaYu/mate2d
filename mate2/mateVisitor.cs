@@ -6,10 +6,10 @@ using Antlr4.Runtime.Misc;
 
 namespace mate2
 {
-    public class Mate2bVisitor : mate2dBaseVisitor<object>
+    public class Mate2dVisitor : mate2dBaseVisitor<object>
     {
 
-        string cppText;
+        public string cppText;
 
         Dictionary<string, object> memory = new Dictionary<string, object>();
 

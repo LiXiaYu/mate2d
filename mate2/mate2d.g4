@@ -60,17 +60,17 @@ InBodyOptValue
 ;
 */
 
-/*
+
 fragment Begin
 	: '@$'
 ;
 fragment End
 	: '$@'
 ;
-*/
+
 
 Body
-	: '@$' .*? '$@'
+	: Begin .*? End
 ;
 
 
