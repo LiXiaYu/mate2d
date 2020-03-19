@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 
 namespace mate2
 {
@@ -80,37 +83,131 @@ namespace mate2
 
             Console.WriteLine(cpptree.ToStringTree(cppp));
             Console.WriteLine(cppr);
-
-            var rules = visitor.ruleBlocks;
-
+            
+            
             // 使用获得的替换规则，对cpp进行替换
-            // TODO: 待完成
-            // TODO: 问题是空格丢了
+            var rules = visitor.ruleBlocks;
+            var text_tokens = cpptree.children.Select(p => p.GetText()).ToList();
+
             foreach(var rule in rules)
             {
-                int index_symbol = 0;
-                for(index_symbol = 0;index_symbol<rule.mateTags.Count;index_symbol++)
-                {
-                    if(rule.mateTags[index_symbol] is MateNameTag)
-                    {
-                        continue;
-                    }
-                    else if(rule.mateTags[index_symbol] is MateSymbolTag)
-                    {
-                        for (int i = 0; i < cpptree.ChildCount; i++)
-                        {
-                            var tokentext = cpptree.children[i].GetText();
 
-                            if(tokentext == rule.mateTags[index_symbol].text)
+                List<string> texts = new List<string>(text_tokens);
+
+                List<MateTag> tags = new List<MateTag>(rule.mateTags);
+
+                for(int i=0;i< text_tokens.Count; i++)
+                {
+                    int index_tags = 0;
+
+                    int counter_tag = 0;
+                    int count_now_text = texts.Count;
+
+                    int j = i;
+                    try
+                    {
+                        string replaced = rule.mateBody;
+
+                        int index_text_start_tag = -1;
+                        int index_text_stop_tag = -1;
+
+
+                        for (j = i; j < text_tokens.Count; j++)
+                        {
+                            var tokentext = text_tokens[j];
+
+                            if (string.IsNullOrWhiteSpace(tokentext))//这个应该用IParseTree的类型判断?但是第二遍就没有了
                             {
-                                //这里应该是个递归。。。我有点不会了。。。
+                                //texts.Add(tokentext);
+                                continue;
                             }
 
+                            if (tags[index_tags] is MateNameTag)
+                            {
+                                if(index_text_start_tag==-1)
+                                {
+                                    index_text_start_tag = j;
+                                }
+                                //texts.Add(tokentext);
+
+
+
+                                //用于替换
+                                string retokentext = tokentext;
+                                if (tokentext[0]=='`'&&tokentext[1]=='('&& tokentext[tokentext.Length-2] == ')' && tokentext[tokentext.Length - 1] == '`')
+                                {
+                                    retokentext = tokentext.Substring(2, tokentext.Length - 4);
+                                }
+                                replaced = replaced.Replace("`" + tags[index_tags].text, retokentext);
+
+
+
+                                counter_tag++;
+                                index_tags++;
+                            }
+                            else if (tags[index_tags] is MateSymbolTag)
+                            {
+                                if (tokentext == tags[index_tags].text)
+                                {
+                                    if (index_text_start_tag == -1)
+                                    {
+                                        index_text_start_tag = j;
+                                    }
+
+                                    //texts.Add(tokentext);
+                                    counter_tag++;
+                                    index_tags++;
+                                }
+                                else//如果Symbol匹配不上的话，就说明匹配失败，结束匹配
+                                {
+                                    //texts.Add(tokentext);
+                                    throw new FailedMatchingException();
+                                }
+                            }
+
+
+                            if(index_tags>=tags.Count)
+                            {
+                                break;
+                            }
                         }
+
+                        if(counter_tag!=tags.Count)
+                        {
+                            throw new FailedMatchingException();
+                        }
+
+                        //完全没有问题了，完全匹配上了：
+
+                        index_text_stop_tag = j;
+
+                        texts.RemoveRange(index_text_start_tag, index_text_stop_tag - index_text_start_tag + 1);
+                        texts.Insert(index_text_start_tag, replaced);
+                        index_tags = 0;
+                        //texts.Add(replaced);
                     }
+                    catch(FailedMatchingException e)
+                    {
+                        j = i+1;
+                        index_tags = 0;
+                    }
+
+                    i = j-1;
                 }
 
+                text_tokens = texts;
+
             }
+
+            //结束替换
+            
+            foreach(var t in text_tokens)
+            {
+                Console.Write(t);
+            }
+            
+
+            //
         }
 
     }
