@@ -13,10 +13,10 @@ body
 ;
 
 word
-    : MateId
-    | MateSymbols
-    | CppSymbols
-    | AnyWord
+    : MateId # mateId
+    | MateSymbols # mateSymbol
+    | CppSymbols # cppSymbol
+    | AnyWord # anyWord
 ;
 
 fragment MateIdTagBegin

@@ -68,7 +68,7 @@ namespace mate2
             Console.WriteLine(result);
 
 
-            var cpps = new AntlrInputStream(visitor.cppText);
+            var cpps = new AntlrInputStream(visitor.cppBlock.mateBody);
             var cppl = new mate2d_BodyLexer(cpps);
             var cppt = new CommonTokenStream(cppl);
             var cppp = new mate2d_BodyParser(cppt);
@@ -76,10 +76,15 @@ namespace mate2
 
             var cppv = new mate2d_BodyVisitor();
             var cppr = cppv.Visit(cpptree);
+
             Console.WriteLine(cpptree.ToStringTree(cppp));
             Console.WriteLine(cppr);
-            Console.ReadKey();
-
+            
+            
+            // 使用获得的替换规则，对cpp进行替换
+            // TODO: 待完成
+            // TODO: 问题是空格丢了
         }
+
     }
 }

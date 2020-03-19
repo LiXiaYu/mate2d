@@ -8,8 +8,14 @@ namespace mate2
 {
     public class Mate2dVisitor : mate2dBaseVisitor<object>
     {
-
-        public string cppText;
+        /// <summary>
+        /// 要被替换的cpp原文
+        /// </summary>
+        public Block cppBlock;
+        /// <summary>
+        /// 替换规则集合
+        /// </summary>
+        public List<Block> ruleBlocks = new List<Block>();
 
         Dictionary<string, object> memory = new Dictionary<string, object>();
 
@@ -17,7 +23,11 @@ namespace mate2
         {
             var body = context.Body();
             var bodyText = body.GetText();
-            this.cppText = bodyText.Substring(2, bodyText.Length - 4);
+
+            this.cppBlock = new Block();
+            this.cppBlock.mateTags = new List<MateTag>();
+            this.cppBlock.mateTags.Add(new MateTag() { text = "艹" });
+            this.cppBlock.mateBody = bodyText.Substring(2, bodyText.Length - 4);
 
             return base.VisitCpp(context);
         }
@@ -33,28 +43,22 @@ namespace mate2
             var blockText = block.GetText();
             var blockcppText = blockText.Substring(2, blockText.Length - 4);
 
-            var names =new List<string>();
-            //通过拼接正则表达式完成替换
-            string exp = ""; 
+            Block block1 = new Block() { mateTags=new List<MateTag>(), mateBody = blockcppText };
+            //把替换规则里面的符号和占位符都拿出来
             for(int i=1;i<context.children.Count-1;i++)
             {
                 var id = context.children[i].GetChild(1).GetText();
                 if (context.children[i].GetChild(0).GetText() == "`")
                 {
-                    names.Add("`" + id);
-                    exp += @"`\(.*?\)`";
+                    block1.mateTags.Add(new MateNameTag() { text = id });
                 }
                 else if(context.children[i].GetChild(0).GetText() == "``")
                 {
-                    exp += id;
-                }
-
-
-                if(i<context.children.Count-2)
-                {
-                    exp += @"\s*?";
+                    block1.mateTags.Add(new MateSymbolTag() { text = id });
                 }
             }
+
+            this.ruleBlocks.Add(block1);
 
             return base.VisitRule(context);
         }

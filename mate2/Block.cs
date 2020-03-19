@@ -4,7 +4,23 @@ using System.Text;
 
 namespace mate2
 {
-    class Block
+    public class Block
+    {
+        public List<MateTag> mateTags;
+        public string mateBody;
+    }
+
+    public class MateTag
+    {
+        public string text;
+    }
+
+    public class MateNameTag : MateTag
+    {
+
+    }
+
+    public class MateSymbolTag:MateTag
     {
 
     }
