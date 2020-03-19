@@ -37,7 +37,8 @@ namespace mate2
             {
                 auto a = ""ddd"";
                 int b=20;
-                auto c=`(foo<std::string>(a+a))`♂`(b)`;
+                auto c=`(foo<std::string>(a+a))`  ♂ 
+ `(b)`;
                 return
                 0;
             } $@";
@@ -79,11 +80,37 @@ namespace mate2
 
             Console.WriteLine(cpptree.ToStringTree(cppp));
             Console.WriteLine(cppr);
-            
-            
+
+            var rules = visitor.ruleBlocks;
+
             // 使用获得的替换规则，对cpp进行替换
             // TODO: 待完成
             // TODO: 问题是空格丢了
+            foreach(var rule in rules)
+            {
+                int index_symbol = 0;
+                for(index_symbol = 0;index_symbol<rule.mateTags.Count;index_symbol++)
+                {
+                    if(rule.mateTags[index_symbol] is MateNameTag)
+                    {
+                        continue;
+                    }
+                    else if(rule.mateTags[index_symbol] is MateSymbolTag)
+                    {
+                        for (int i = 0; i < cpptree.ChildCount; i++)
+                        {
+                            var tokentext = cpptree.children[i].GetText();
+
+                            if(tokentext == rule.mateTags[index_symbol].text)
+                            {
+                                //这里应该是个递归。。。我有点不会了。。。
+                            }
+
+                        }
+                    }
+                }
+
+            }
         }
 
     }

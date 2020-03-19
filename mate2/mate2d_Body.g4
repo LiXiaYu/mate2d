@@ -16,6 +16,7 @@ word
     : MateId # mateId
     | MateSymbols # mateSymbol
     | CppSymbols # cppSymbol
+    | WS # ws
     | AnyWord # anyWord
 ;
 
@@ -67,7 +68,7 @@ CppSymbols
 ;
 
 WS
-	: ( '\t' | ' ' | '\r' | '\n' )+   -> skip
+	: ( '\t' | ' ' | '\r' | '\n' )+
 ;
 
 AnyWord
