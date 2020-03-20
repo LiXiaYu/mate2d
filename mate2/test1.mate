@@ -1,0 +1,21 @@
+﻿
+@``testname @$ auto b=
+"bbb"; $@
+@``test2 @$ .next() $@
+@`a ``♂ `b @$ `a += `b $@
+@``ass `we ``can @$ we------$@
+
+@ 艹 @$ # include<opkopklk>
+
+            //KKKKK 33
+            ////shmm mate ddd end
+            mate A<{ ddd(); }> end
+            int main()
+            {
+                auto a = "ddd";
+                int b=20;
+                auto c=`(foo<std::string>(a+a))`  ♂ 
+ `(b)`;
+                return
+                0;
+            } $@

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "mate2": {
+      "commandName": "Project",
+      "commandLineArgs": "-mate test1.mate -cpp test1.cpp"
+    }
+  }
+}

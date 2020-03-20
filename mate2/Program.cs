@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using PowerArgs;
 
 namespace mate2
 {
@@ -24,30 +26,14 @@ namespace mate2
             //return
             //0;
             //}";
-            string input = @"
-@``testname @$ auto b=
-""bbb""; $@
-@``test2 @$ .next() $@
-@`a ``♂ `b @$ `a += `b $@
-@``ass `we ``can @$ we------$@
+//            string input = @"
+//@``testname @$ auto b=
+//""bbb""; $@
+//@``test2 @$ .next() $@
+//@`a ``♂ `b @$ `a += `b $@
+//@``ass `we ``can @$ we------$@
 
-@ 艹 @$ # include<opkopklk>
-
-            //KKKKK 33
-            ////shmm mate ddd end
-            mate A<{ ddd(); }> end
-            int main()
-            {
-                auto a = ""ddd"";
-                int b=20;
-                auto c=`(foo<std::string>(a+a))`  ♂ 
- `(b)`;
-                return
-                0;
-            } $@";
-
-
-//# include<opkopklk>
+//@ 艹 @$ # include<opkopklk>
 
 //            //KKKKK 33
 //            ////shmm mate ddd end
@@ -55,23 +41,78 @@ namespace mate2
 //            int main()
 //            {
 //                auto a = ""ddd"";
+//                int b=20;
+//                auto c=`(foo<std::string>(a+a))`  ♂ 
+// `(b)`;
 //                return
 //                0;
-//            }
-
-            var stream = new AntlrInputStream(input);
-            var lexer = new mate2dLexer(stream);
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new mate2dParser(tokens);
-            var tree = parser.program();
-
-            var visitor = new Mate2dVisitor();
-            var result = visitor.Visit(tree);
-
-            Console.WriteLine(tree.ToStringTree(parser));
-            Console.WriteLine(result);
+//            } $@";
 
 
+            //# include<opkopklk>
+
+            //            //KKKKK 33
+            //            ////shmm mate ddd end
+            //            mate A<{ ddd(); }> end
+            //            int main()
+            //            {
+            //                auto a = ""ddd"";
+            //                return
+            //                0;
+            //            }
+
+            try
+            {
+                var parsed = Args.Parse<MyArgs>(args);
+
+                var mateFilePath = parsed.MateFilePath;
+                var cppFilePath = string.IsNullOrEmpty(parsed.CppFilePath)?(parsed.MateFilePath+".cpp"): parsed.CppFilePath;
+
+                var mateFile = File.ReadAllText(mateFilePath);
+
+                Mate2dVisitor visitor = MateRuleVisit(mateFile);
+
+                //Console.WriteLine(tree.ToStringTree(parser));
+                //Console.WriteLine(result);
+
+
+                mate2d_BodyParser.BodyContext cpptree = MateBodyVisit(visitor);
+
+                //Console.WriteLine(cpptree.ToStringTree(cppp));
+                //Console.WriteLine(cppr);
+
+
+                // 使用获得的替换规则，对cpp进行替换
+                var rules = visitor.ruleBlocks;
+                var text_tokens = cpptree.children.Select(p => p.GetText()).ToList();
+
+                text_tokens = Replace(rules, text_tokens);
+
+                //结束替换
+
+                string s = "";
+                foreach (var t in text_tokens)
+                {
+                    s += t;
+                }
+
+                File.WriteAllText(cppFilePath, s);
+
+            }
+            catch (ArgException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ArgUsage.GenerateUsageFromTemplate<MyArgs>());
+            }
+
+
+
+
+            //
+        }
+
+        private static mate2d_BodyParser.BodyContext MateBodyVisit(Mate2dVisitor visitor)
+        {
             var cpps = new AntlrInputStream(visitor.cppBlock.mateBody);
             var cppl = new mate2d_BodyLexer(cpps);
             var cppt = new CommonTokenStream(cppl);
@@ -80,23 +121,32 @@ namespace mate2
 
             var cppv = new mate2d_BodyVisitor();
             var cppr = cppv.Visit(cpptree);
+            return cpptree;
+        }
 
-            Console.WriteLine(cpptree.ToStringTree(cppp));
-            Console.WriteLine(cppr);
-            
-            
-            // 使用获得的替换规则，对cpp进行替换
-            var rules = visitor.ruleBlocks;
-            var text_tokens = cpptree.children.Select(p => p.GetText()).ToList();
+        private static Mate2dVisitor MateRuleVisit(string input)
+        {
+            var stream = new AntlrInputStream(input);
+            var lexer = new mate2dLexer(stream);
+            var tokens = new CommonTokenStream(lexer);
+            var parser = new mate2dParser(tokens);
+            var tree = parser.program();
 
-            foreach(var rule in rules)
+            var visitor = new Mate2dVisitor();
+            var result = visitor.Visit(tree);
+            return visitor;
+        }
+
+        private static List<string> Replace(List<Block> rules, List<string> text_tokens)
+        {
+            foreach (var rule in rules)
             {
 
                 List<string> texts = new List<string>(text_tokens);
 
                 List<MateTag> tags = new List<MateTag>(rule.mateTags);
 
-                for(int i=0;i< text_tokens.Count; i++)
+                for (int i = 0; i < text_tokens.Count; i++)
                 {
                     int index_tags = 0;
 
@@ -124,7 +174,7 @@ namespace mate2
 
                             if (tags[index_tags] is MateNameTag)
                             {
-                                if(index_text_start_tag==-1)
+                                if (index_text_start_tag == -1)
                                 {
                                     index_text_start_tag = j;
                                 }
@@ -134,7 +184,7 @@ namespace mate2
 
                                 //用于替换
                                 string retokentext = tokentext;
-                                if (tokentext[0]=='`'&&tokentext[1]=='('&& tokentext[tokentext.Length-2] == ')' && tokentext[tokentext.Length - 1] == '`')
+                                if (tokentext[0] == '`' && tokentext[1] == '(' && tokentext[tokentext.Length - 2] == ')' && tokentext[tokentext.Length - 1] == '`')
                                 {
                                     retokentext = tokentext.Substring(2, tokentext.Length - 4);
                                 }
@@ -166,13 +216,13 @@ namespace mate2
                             }
 
 
-                            if(index_tags>=tags.Count)
+                            if (index_tags >= tags.Count)
                             {
                                 break;
                             }
                         }
 
-                        if(counter_tag!=tags.Count)
+                        if (counter_tag != tags.Count)
                         {
                             throw new FailedMatchingException();
                         }
@@ -186,29 +236,20 @@ namespace mate2
                         index_tags = 0;
                         //texts.Add(replaced);
                     }
-                    catch(FailedMatchingException e)
+                    catch (FailedMatchingException e)
                     {
-                        j = i+1;
+                        j = i + 1;
                         index_tags = 0;
                     }
 
-                    i = j-1;
+                    i = j - 1;
                 }
 
                 text_tokens = texts;
 
             }
 
-            //结束替换
-            
-            foreach(var t in text_tokens)
-            {
-                Console.Write(t);
-            }
-            
-
-            //
+            return text_tokens;
         }
-
     }
 }
