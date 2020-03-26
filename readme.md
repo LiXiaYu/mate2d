@@ -4,6 +4,11 @@ mate2d
 
 使用antlr
 
+## 使用方法
+mate.exe -mate test1.mate -cpp test1.cpp 
+
+依据test1.mate文件生成test1.cpp
+
 ## 以下是计划/设计
 
 ### 语法说明
