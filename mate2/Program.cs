@@ -231,9 +231,13 @@ namespace mate2
 
                         index_text_stop_tag = j;
 
+
+                        index_text_start_tag -= text_tokens.Count - texts.Count;
+                        index_text_stop_tag -= text_tokens.Count - texts.Count;
                         texts.RemoveRange(index_text_start_tag, index_text_stop_tag - index_text_start_tag + 1);
                         texts.Insert(index_text_start_tag, replaced);
                         index_tags = 0;
+
                         //texts.Add(replaced);
                     }
                     catch (FailedMatchingException e)

@@ -1,21 +1,25 @@
-﻿
-@``testname @$ auto b=
-"bbb"; $@
-@``test2 @$ .next() $@
-@`a ``♂ `b @$ `a += `b $@
-@``ass `we ``can @$ we------$@
+﻿@``let `varname ``= `varvalue @$auto `varname = `varvalue$@
+@``let `varname ``as `vartype ``= `varvalue @$`vartype `varname = `varvalue$@
 
-@ 艹 @$ # include<opkopklk>
+@`ptrtype ``♂ `ptrname @$::std::unique_ptr<`ptrtype> `ptrname$@
 
-            //KKKKK 33
-            ////shmm mate ddd end
-            mate A<{ ddd(); }> end
-            int main()
-            {
-                auto a = "ddd";
-                int b=20;
-                auto c=`(foo<std::string>(a+a))`  ♂ 
- `(b)`;
-                return
-                0;
-            } $@
+@ 艹 @$# include<iostream>
+#include <memory>
+
+int main()
+{
+
+
+    let a = 10;
+    let c = 8;
+    let b as int = 10;
+
+
+    int ♂ pri(new int(233));
+    `(int[])` ♂ pr(new int[10]());
+
+
+    
+    return
+    0;
+}$@
