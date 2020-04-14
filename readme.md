@@ -4,13 +4,11 @@ mate2d
 
 使用antlr
 
-## 以下是计划/设计
-
 ### 语法说明
 
 使用`@`开头
 
-#### 替换
+#### 替换规则
 
     @ [macro] @$ [cpp-code] $@
 
@@ -30,10 +28,22 @@ mate2d
 auto c=foo<std::string>(a+a) += b;
 ```
 
-#### 使用C++代码
+### 使用C++代码
 
-    @艹 @$ 这里是正常的c++ $@
+    c++代码被写在*.mate文件中
 
-### CPP中使用
+#### CPP中使用
 
 在c++中使用时，请使用``` `( ```与``` )` ```将内容括起来
+
+
+### mate2.exe
+
+    命令行帮助使用-help
+
+    -mate后面跟mate文件
+    -matelib后面跟替换规则所在的文件，可以跟多个，将会被合并起来一起作用于mate文件的替换
+    -cpp后面跟要生成的cpp文件名，不加这个参数的话，会在-mate文件名字后面加.cpp
+        
+例如：
+    -mate test1.mate -matelib test1_0.matelib test1_1.matelib -cpp test1.cpp

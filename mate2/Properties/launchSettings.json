@@ -2,7 +2,7 @@
   "profiles": {
     "mate2": {
       "commandName": "Project",
-      "commandLineArgs": "-mate test1.mate -cpp test1.cpp"
+      "commandLineArgs": "-mate test1.mate -matelib test1_0.matelib test1_1.matelib -cpp test1.cpp"
     }
   }
 }

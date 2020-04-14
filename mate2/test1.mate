@@ -1,11 +1,4 @@
-﻿
-@``testname @$ auto b=
-"bbb"; $@
-@``test2 @$ .next() $@
-@`a ``♂ `b @$ `a += `b $@
-@``ass `we ``can @$ we------$@
-
-@ 艹 @$ # include<opkopklk>
+﻿# include<opkopklk>
 
             //KKKKK 33
             ////shmm mate ddd end
@@ -18,4 +11,4 @@
  `(b)`;
                 return
                 0;
-            } $@
+            }

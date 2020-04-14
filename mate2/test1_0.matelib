@@ -1,0 +1,3 @@
+﻿@``testname @$ auto b=
+"bbb"; $@
+@``test2 @$ .next() $@
