@@ -13,6 +13,9 @@ namespace mate2
         [ArgRequired(PromptIfMissing = true), ArgShortcut("-mate")]
         public string MateFilePath { get; set; }
 
+        [ArgRequired(PromptIfMissing = true), ArgShortcut("-matelib")]
+        public string[] MateLibFilePaths { get; set; }
+
 
         [HelpHook, ArgShortcut("-?"), ArgDescription("Show this help")]
         public bool Help { get; set; }

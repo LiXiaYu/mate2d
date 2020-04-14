@@ -12,55 +12,6 @@ namespace mate2
     {
         static void Main(string[] args)
         {
-            //string input = @"#include <stdio.h>
-            //#define MDPEKLF\
-            //KKKKK 33
-            ////shmmm
-            //mate AAA
-            //<{
-            //        string aa=""888jjjj"";
-            //}>
-            //endmate
-            //int main(){
-            //auto a=""ddd"";
-            //return
-            //0;
-            //}";
-//            string input = @"
-//@``testname @$ auto b=
-//""bbb""; $@
-//@``test2 @$ .next() $@
-//@`a ``♂ `b @$ `a += `b $@
-//@``ass `we ``can @$ we------$@
-
-//@ 艹 @$ # include<opkopklk>
-
-//            //KKKKK 33
-//            ////shmm mate ddd end
-//            mate A<{ ddd(); }> end
-//            int main()
-//            {
-//                auto a = ""ddd"";
-//                int b=20;
-//                auto c=`(foo<std::string>(a+a))`  ♂ 
-// `(b)`;
-//                return
-//                0;
-//            } $@";
-
-
-            //# include<opkopklk>
-
-            //            //KKKKK 33
-            //            ////shmm mate ddd end
-            //            mate A<{ ddd(); }> end
-            //            int main()
-            //            {
-            //                auto a = ""ddd"";
-            //                return
-            //                0;
-            //            }
-
             try
             {
                 var parsed = Args.Parse<MyArgs>(args);
@@ -70,13 +21,15 @@ namespace mate2
 
                 var mateFile = File.ReadAllText(mateFilePath);
 
-                Mate2dVisitor visitor = MateRuleVisit(mateFile);
+                var mateLibFile = string.Concat(parsed.MateLibFilePaths.Select(p => File.ReadAllText(p)).ToList().Select(p=>p+"\n").ToList());
+
+                Mate2dVisitor visitor = MateRuleVisit(mateLibFile);
 
                 //Console.WriteLine(tree.ToStringTree(parser));
                 //Console.WriteLine(result);
 
 
-                mate2d_BodyParser.BodyContext cpptree = MateBodyVisit(visitor);
+                mate2d_BodyParser.BodyContext cpptree = MateBodyVisit(mateFile);
 
                 //Console.WriteLine(cpptree.ToStringTree(cppp));
                 //Console.WriteLine(cppr);
@@ -111,9 +64,9 @@ namespace mate2
             //
         }
 
-        private static mate2d_BodyParser.BodyContext MateBodyVisit(Mate2dVisitor visitor)
+        private static mate2d_BodyParser.BodyContext MateBodyVisit(string input)
         {
-            var cpps = new AntlrInputStream(visitor.cppBlock.mateBody);
+            var cpps = new AntlrInputStream(input);
             var cppl = new mate2d_BodyLexer(cpps);
             var cppt = new CommonTokenStream(cppl);
             var cppp = new mate2d_BodyParser(cppt);

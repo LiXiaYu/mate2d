@@ -3,6 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>0.2.0.0</Version>
+    <Authors>LiXiaYu</Authors>
+    <Description>给c++的宏替换器</Description>
+    <PackageIcon>❀.png</PackageIcon>
+    <ApplicationIcon>20200403090713542_easyicon_net_16.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,8 +31,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="test1_0.matelib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="test1_1.matelib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="test1.mate">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="C:\Users\liqi\Pictures\❀.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 
