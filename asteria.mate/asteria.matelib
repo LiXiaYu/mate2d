@@ -1,0 +1,6 @@
+@``var `funcname ``= ``func@$auto `funcname = [&]$@
+@``var `nullvarname ``;@$auto `nullvarname = nullptr ;$@
+
+@``const `imvarname ``= `varvalue@$const auto `imvarname = `varvalue$@
+
+@``func `funcname ``(@$auto `funcname($@
