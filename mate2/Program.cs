@@ -191,6 +191,11 @@ namespace mate2
                         texts.Insert(index_text_start_tag, replaced);
                         index_tags = 0;
 
+                        if(index_text_start_tag==index_text_stop_tag)
+                        {
+                            j++;//单独只替换一个时
+                        }
+                        //j += index_text_stop_tag - index_text_start_tag + 1;
                         //texts.Add(replaced);
                     }
                     catch (FailedMatchingException e)
