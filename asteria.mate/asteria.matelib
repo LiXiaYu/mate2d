@@ -4,3 +4,5 @@
 @``const `imvarname ``= `varvalue@$const auto `imvarname = `varvalue$@
 
 @``func `funcname ``(@$auto `funcname($@
+
+@``& `refname@$ std::unique_ptr(`refname) $@
