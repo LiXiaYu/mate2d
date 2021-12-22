@@ -2,14 +2,19 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Version>0.2.0.0</Version>
     <Authors>LiXiaYu</Authors>
     <Description>给c++的宏替换器</Description>
-    <PackageIcon>❀.png</PackageIcon>
     <ApplicationIcon>20200403090713542_easyicon_net_16.ico</ApplicationIcon>
   </PropertyGroup>
-
+  <ItemGroup>
+    <None Remove="PowerArgs" />
+    <None Remove="Antlr4" />
+    <None Remove="Antlr4.Runtime" />
+    <None Remove="Antlr4.CodeGenerator" />
+    <None Remove="Antlr4.Runtime.Standard" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Antlr4" Version="4.6.6">
       <PrivateAssets>all</PrivateAssets>
@@ -24,13 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Antlr4 Update="mate2d_Body.g4">
-      <DefaultCustomToolNamespace>$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))</DefaultCustomToolNamespace>
-      <CustomToolNamespace>$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))</CustomToolNamespace>
-    </Antlr4>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="test1_0.matelib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -39,10 +37,6 @@
     </None>
     <None Update="test1.mate">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="C:\Users\liqi\Pictures\❀.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 
