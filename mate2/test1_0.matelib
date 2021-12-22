@@ -1,3 +1,4 @@
 ﻿@``testname @$ auto b=
 "bbb"; $@
 @``test2 @$ .next() $@
+@``mate @$class$@
