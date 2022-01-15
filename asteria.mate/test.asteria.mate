@@ -11,3 +11,15 @@ var bar = func() { return& inc;  };      // return by reference
 func add(x) { return x + inc;  };   // return by value
 // `add` refers to an "immutable variable" holding a function.
 // `add(5)` refers to a "temporary" holding an `integer` of `47`.
+
+
+//希望给mate加个贪心，无限循环替换直到无法替换为止
+func add(x1,x2,x3)
+{
+    return x1+x2+x3;
+};
+
+/*
+//@``func `funcname ``( `varname ``)@$template<typename T>
+//auto `funcname(T `varname )$@
+*/

@@ -3,6 +3,14 @@
     "mate2": {
       "commandName": "Project",
       "commandLineArgs": "-mate test1.mate -matelib test1_0.matelib test1_1.matelib -cpp test1.cpp"
+    },
+    "配置文件 1": {
+      "commandName": "Project",
+      "commandLineArgs": "-mate test1.mate -matelib test1_0.matelib test1_1.matelib -cpp test1.cpp"
+    },
+    "配置文件 2": {
+      "commandName": "Project",
+      "commandLineArgs": "-mate test1.mate -matelib test1_0.matelib test1_1.matelib -cpp test1.cpp"
     }
   }
 }

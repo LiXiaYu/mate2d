@@ -3,6 +3,27 @@
 
 @``const `imvarname ``= `varvalue@$const auto `imvarname = `varvalue$@
 
+
+@``matetemp_func_start `temp_tvs ``func `funcname ``( ``) `temp_fvs ``matetemp_func_end@$template< `temp_tvs >
+func `funcname(`temp_fvs)$@
+
+@``matetemp_func_start `temp_tvs ``func `funcname ``( `varname1 ``) `temp_fvs ``matetemp_func_end@$matetemp_func_start `temp_tvs,typename T_`varname1_
+func `funcname()
+`temp_fvs, T_`varname1 `varname1
+matetemp_func_end$@
+
+@``matetemp_func_start `temp_tvs ``func `funcname ``( `varname1 ``, `others ``) `temp_fvs ``matetemp_func_end@$matetemp_func_start `temp_tvs,typename T_`varname1_
+func `funcname(`others)
+`temp_fvs, T_`varname1 `varname1
+matetemp_func_end$@
+
+@``func `funcname ``( `varname1 ``, `others ``)@$matetemp_func_start typename T_`varname1
+func `funcname(`others)
+T_`varname1 `varname1
+matetemp_func_end$@
+
+
+
 @``func `funcname ``(@$auto `funcname($@
 
 @``& `refname@$ std::unique_ptr(`refname) $@
